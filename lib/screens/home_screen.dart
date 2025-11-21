@@ -45,6 +45,17 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onRestartPressed() {
+    if (totalSeconds == twentyFiveMinutes) {
+      return;
+    }
+    timer.cancel();
+    totalSeconds = twentyFiveMinutes;
+    setState(() {
+      isRunning = false;
+    });
+  }
+
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
     print(duration.toString().substring(2, 7));
@@ -74,15 +85,34 @@ class _HomeScreenState extends State<HomeScreen> {
           Flexible(
             flex: 3,
             child: Center(
-              child: IconButton(
-                iconSize: 110,
-                color: Theme.of(context).cardColor,
-                onPressed: isRunning ? onPausePressed : onStartPressed,
-                icon: Icon(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   isRunning
-                      ? Icons.pause_circle_outline
-                      : Icons.play_circle_outlined,
-                ),
+                      ? IconButton(
+                          iconSize: 110,
+                          color: Theme.of(context).cardColor,
+                          onPressed: onPausePressed,
+                          icon: Icon(Icons.pause_circle_filled_outlined),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              iconSize: 110,
+                              color: Theme.of(context).cardColor,
+                              onPressed: onStartPressed,
+                              icon: Icon(Icons.play_circle_outlined),
+                            ),
+                            IconButton(
+                              iconSize: 50,
+                              color: Theme.of(context).cardColor,
+                              onPressed: onRestartPressed,
+                              icon: Icon(Icons.restart_alt_outlined),
+                            ),
+                          ],
+                        ),
+                ],
               ),
             ),
           ),
